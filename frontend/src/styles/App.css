@@ -1,13 +1,23 @@
-/* Fichier: frontend/src/styles/App.css */
+/* frontend/src/styles/App.css */
+
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  
+  /* Dégradé bleu foncé subtil (Midnight Blue) */
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  
+  /* Assure que le fond prend toute la hauteur de l'écran */
+  min-height: 100vh;
+  
+  /* Change la couleur du texte en clair pour qu'il soit lisible sur le bleu */
+  color: #ffffff; 
 }
 
+/* Si tu veux que tes cartes/conteneurs restent blancs/clairs par dessus : */
 #root {
-    display: flex;
-    justify-content: center;
-    padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
 }

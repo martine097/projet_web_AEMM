@@ -16,5 +16,5 @@ class UserRead(BaseModel):
         from_attributes = True  # ou orm_mode = True si vous avez Pydantic < 2
 
 class UserLogin(BaseModel):
-    email: str
+    username: str
     password: str

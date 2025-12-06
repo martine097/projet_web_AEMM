@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import './styles/App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import {API, fetcher} from "./api/api";
-import { message, Typography } from 'antd'; // Ajout de Typography pour l'écran de chargement
+import { message, Typography } from 'antd';
 import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 
@@ -11,7 +11,7 @@ const { Title } = Typography;
 function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [loadingInitial, setLoadingInitial] = useState(true); // <-- NOUVEAU : État de chargement initial
+  const [loadingInitial, setLoadingInitial] = useState(true);
 
   // --- LOGIQUE DE VÉRIFICATION INITIALE ---
   useEffect(() => {
@@ -38,16 +38,35 @@ function App() {
   
   // --- Fonctions de connexion/déconnexion/enregistrement (avec redirection) ---
   
-  const onLogin = async (values) => {   
-    let payload = { email:values.email, password:values.password };
+const onLogin = async (values) => { 
+    // values contient déjà { username: '...', password: '...' } grâce à Login.jsx
+    
+    let payload = { 
+        // 1. Utiliser values.username (ce qui vient du formulaire)
+        username: values.username, 
+        
+        // 2. S'assurer que la clé JSON envoyée correspond au schéma UserLogin corrigé (username: str)
+        password: values.password 
+    };
+    
     try {
+        // Envoi du payload corrigé à l'API
         const { data } = await API.post('/users/login', payload);
+        
+        // Si la connexion réussit (statut 200/201)
         setUser(data.user);
         message.success(`Bienvenue, ${data.user.name} !`);
         navigate('/'); // <-- REDIRECTION VERS LA PAGE PRINCIPALE
     } catch (error) {
+        // Le backend renvoie 401 si les identifiants sont incorrects
         console.error("Erreur lors du login:", error);
-        message.error("Identifiants incorrects.");
+        
+        // Si l'erreur est un 401 (Unauthorized), affichez un message plus précis
+        if (error.response && error.response.status === 401) {
+            message.error("Identifiant ou mot de passe incorrect.");
+        } else {
+            message.error("Une erreur s'est produite lors de la connexion.");
+        }
     }
   };
 

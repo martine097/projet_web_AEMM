@@ -15,14 +15,11 @@ def create_user(db: Session, name: str, email: str, password: str, role: str = "
     db.refresh(user)
     return user
 
-def authenticate_user(db: Session, email: str, password: str):
-    """Authentifie un utilisateur."""
-    user = db.query(User).filter(User.email == email).first()
-    
-    if not user:
-        return None
-    
-    if not verify_password(password, user.password):
-        return None
+def authenticate_user(db: Session, username: str, password: str) -> User | None:
+
+    user = db.query(User).filter(User.name == username).first()
+
+    if user is None or not verify_password(password, user.password):
+        return None  # Échec de l'authentification
         
     return user
