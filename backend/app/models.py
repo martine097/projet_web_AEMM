@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Enu
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
-from app.database import Base
+from .config import Base
 
 # Enums
 class UserRole(str, enum.Enum):
@@ -40,12 +40,10 @@ class User(Base):
     __tablename__ = "users"
     
     id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    role = Column(Enum(UserRole), default=UserRole.CITIZEN, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    password = Column(String, nullable=False)  # On stockera le hash dedans
+    role = Column(String, nullable=False, default="citizen")
     
     # Relations
     vehicles = relationship("Vehicle", back_populates="owner", cascade="all, delete-orphan")
