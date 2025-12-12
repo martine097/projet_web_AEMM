@@ -1,0 +1,13 @@
+services:
+  frontendbase:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontendbase
+    ports:
+      - "8080:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
